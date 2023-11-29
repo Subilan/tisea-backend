@@ -1,0 +1,9 @@
+jwt_private_key: aaaaaaaaaaaaaaaaaaa
+jwt_expiration: 120 # in minutes
+
+database:
+  username: root
+  password: ~
+  db: tisea
+  host: localhost
+  port: 3306
