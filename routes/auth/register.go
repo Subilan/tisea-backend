@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"encoding/json"
 	"tisea-backend/structs"
 	"tisea-backend/utils"
 
@@ -19,6 +18,4 @@ func handle(ctx *gin.Context) {
 	if len(request.Username) == 0 || len(request.Email) == 0 || len(request.Password) == 0 {
 		utils.NG(ctx, "Not enough argument.", nil)
 	}
-
-	selectUser := 
 }
