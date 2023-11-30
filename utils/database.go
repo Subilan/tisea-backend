@@ -24,7 +24,28 @@ func GetConnection() (*sql.DB, error) {
 	return db, nil
 }
 
-func Query(queryString string, values... interface{}) (sql.Result, error) {
+func Exec(execString string, values... interface{}) (sql.Result, error) {
+	db, err := GetConnection()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+
+	stmt, stmtErr := db.Prepare(execString)
+
+	if stmtErr != nil {
+		return nil, stmtErr
+	}
+
+	effect, execErr := stmt.Exec(values...)
+	if execErr != nil {
+		return nil, execErr
+	}
+
+	return effect, nil
+}
+
+func Query(queryString string, values... interface{}) (*sql.Rows, error) {
 	db, err := GetConnection()
 	if err != nil {
 		return nil, err
@@ -37,9 +58,9 @@ func Query(queryString string, values... interface{}) (sql.Result, error) {
 		return nil, stmtErr
 	}
 
-	result, execErr := stmt.Exec(values...)
-	if execErr != nil {
-		return nil, execErr
+	result, queryErr := stmt.Query(values...)
+	if queryErr != nil {
+		return nil, queryErr
 	}
 
 	return result, nil
