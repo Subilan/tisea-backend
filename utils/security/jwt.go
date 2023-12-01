@@ -1,16 +1,19 @@
-package jwt
+package security
 
-import "fmt"
-import "time"
-import "github.com/golang-jwt/jwt"
-import "tisea-backend/utils/config"
+import (
+	"fmt"
+	"time"
+	"tisea-backend/utils/config"
+
+	"github.com/golang-jwt/jwt"
+)
 
 func GenerateTokenFor(data map[string]interface{}) (string, error) {
 	var cfg = config.GetConfiguration()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &jwt.MapClaims{
-		"iss": "tisea",
-		"iat": time.Now().Unix(),
-		"exp": time.Now().Add(time.Duration(cfg.JwtExpiration) * time.Minute).Unix(),
+		"iss":  "tisea",
+		"iat":  time.Now().Unix(),
+		"exp":  time.Now().Add(time.Duration(cfg.JwtExpiration) * time.Minute).Unix(),
 		"data": data,
 	})
 
@@ -56,7 +59,7 @@ func Extract(tokenString string) (map[string]interface{}, error) {
 	if check != nil {
 		return nil, check
 	}
-	
+
 	parse, parseErr := Parse(tokenString)
 
 	if parseErr != nil {
