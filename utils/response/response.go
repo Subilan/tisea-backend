@@ -7,21 +7,28 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Respond(c *gin.Context, ok bool, finishMessage string, errorCause string, data interface{}) {
-	c.JSON(http.StatusOK, map[string]interface{}{
+func Respond(c *gin.Context, ok bool, finishMessage string, errorObj error, data interface{}) {
+	response := map[string]interface{}{
 		"ok": ok,
 		"message": finishMessage,
-		"cause": errorCause,
 		"data": data,
 		"timestamp": time.Now().UnixMilli(),
-	})
+	}
+
+	if errorObj != nil {
+		response["error"] = errorObj.Error()
+	} else {
+		response["error"] = nil
+	}
+
+	c.JSON(http.StatusOK, response)
 }
 
 func OK(c *gin.Context, finishMessage string, data interface{}) {
-	Respond(c, true, finishMessage, "", data)
+	Respond(c, true, finishMessage, nil, data)
 }
 
-func NG(c *gin.Context, errorCause string, data interface{}) {
-	Respond(c, false, "", errorCause, data)
+func NG(c *gin.Context, errorObj error, data interface{}) {
+	Respond(c, false, "", errorObj, data)
 }
 
