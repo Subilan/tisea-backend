@@ -1,11 +1,12 @@
-package utils
+package jwt
 
 import "fmt"
 import "time"
 import "github.com/golang-jwt/jwt"
+import "tisea-backend/utils/config"
 
 func GenerateTokenFor(data map[string]interface{}) (string, error) {
-	var cfg = GetConfiguration()
+	var cfg = config.GetConfiguration()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &jwt.MapClaims{
 		"iss": "tisea",
 		"iat": time.Now().Unix(),
@@ -24,7 +25,7 @@ func GenerateTokenFor(data map[string]interface{}) (string, error) {
 
 // 尝试解析给定的 token 字符串。若 token 可以被正确解析，error 为 nil，并会返回解析后的 token 对象。
 func Parse(tokenString string) (*jwt.Token, error) {
-	var cfg = GetConfiguration()
+	var cfg = config.GetConfiguration()
 	return jwt.Parse(tokenString, func(t *jwt.Token) (interface{}, error) {
 		if alg := t.Method.Alg(); alg != "HS256" {
 			return nil, fmt.Errorf("Invalid signing method %v", alg)
