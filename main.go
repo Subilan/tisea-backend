@@ -1,34 +1,24 @@
 package main
 
 import (
-	"database/sql"
-	"fmt"
-	"time"
-	"tisea-backend/middlewares"
-	"tisea-backend/utils/config"
-	"tisea-backend/utils/database"
-
-	"github.com/gin-gonic/gin"
+	"log"
+	"os"
+	"github.com/urfave/cli/v2"
 )
 
 func main() {
-	gin := gin.New()
-	gin.Use(middlewares.WithGlobalHeaders())
-	gin.Use(middlewares.WithLogger())
+	app := &cli.App{
+		Name: "tisea",
+		Usage: "Central management and entrance of the backend part of Tisea.",
+		Action: func(ctx *cli.Context) error {
+			if ctx.NArg() == 0 {
+				return cli.ShowAppHelp(ctx)
+			}
+			return nil
+		},
+	}
 
-	cfg := config.GetConfiguration()
-	pool, poolErr := sql.Open("mysql", fmt.Sprintf("%s:%s@%s:%d/%s", cfg.Database.Username, cfg.Database.Password, cfg.Database.Host, cfg.Database.Port, cfg.Database.Dbname))
-	
-	if poolErr != nil {
-		panic(poolErr)
+	if err := app.Run(os.Args); err != nil {
+		log.Fatal(err)
 	}
-	
-	database.Pool = pool
-	connErr := database.Pool.Ping()
-	if connErr != nil {
-		panic(connErr)
-	}
-	database.Pool.SetConnMaxLifetime(3 * time.Minute)
-	database.Pool.SetMaxOpenConns(10)
-	database.Pool.SetMaxIdleConns(10)
 }
