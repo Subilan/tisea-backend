@@ -16,7 +16,7 @@ type DatabaseSubconfiguration struct {
 
 type TiseaConfiguration struct {
 	JwtPrivateKey string                   `yaml:"jwt_private_key"`
-	JwtExpiration int                      `yaml:"jwt_expiration"`
+	JwtDefaultExp int                      `yaml:"jwt_default_expiration"`
 	Database      DatabaseSubconfiguration `yaml:"database"`
 }
 

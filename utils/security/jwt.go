@@ -8,12 +8,25 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-func GenerateTokenFor(data map[string]interface{}) (string, error) {
+func GenerateTokenForUser(username string, remembered bool) (string, error) {
+	var cfg = config.GetConfiguration()
+	duration := time.Duration(cfg.JwtDefaultExp) * time.Minute
+
+	if remembered {
+		duration = time.Duration(7*24) * time.Hour
+	}
+
+	return GenerateToken(map[string]interface{}{
+		"username": username,
+	}, duration)
+}
+
+func GenerateToken(data map[string]interface{}, duration time.Duration) (string, error) {
 	var cfg = config.GetConfiguration()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &jwt.MapClaims{
 		"iss":  "tisea",
 		"iat":  time.Now().Unix(),
-		"exp":  time.Now().Add(time.Duration(cfg.JwtExpiration) * time.Minute).Unix(),
+		"exp":  time.Now().Add(duration).Unix(),
 		"data": data,
 	})
 
