@@ -1,5 +1,5 @@
-jwt_private_key: aaaaaaaaaaaaaaaaaaa
-jwt_default_expiration: 120 # in minutes
+jwt_private_key: ~
+jwt_default_expiration: 120 # 分钟
 
 database:
   username: root
