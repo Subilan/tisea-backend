@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"time"
-	"tisea-backend/middlewares"
 	"tisea-backend/handlers/auth"
+	"tisea-backend/middlewares"
 	"tisea-backend/utils/config"
 	"tisea-backend/utils/database"
 
@@ -14,7 +14,10 @@ import (
 
 func RunBackend() error {
 	cfg := config.GetConfiguration()
-	pool, poolErr := sql.Open("mysql", fmt.Sprintf("%s:%s@%s:%d/%s", cfg.Database.Username, cfg.Database.Password, cfg.Database.Host, cfg.Database.Port, cfg.Database.Dbname))
+
+	// Database initialization
+
+	pool, poolErr := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", cfg.Database.Username, cfg.Database.Password, cfg.Database.Host, cfg.Database.Port, cfg.Database.Dbname))
 
 	if poolErr != nil {
 		return poolErr
@@ -33,7 +36,12 @@ func RunBackend() error {
 	gin.Use(middlewares.WithGlobalHeaders())
 	gin.Use(middlewares.WithLogger())
 
+	// Handler bindings
+
 	auth.Bind(gin)
+
+	// Necessary to block the calling goroutine
+	gin.Run(":3000")
 
 	return nil
 }
