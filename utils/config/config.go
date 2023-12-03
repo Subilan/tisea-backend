@@ -1,7 +1,9 @@
 package config
 
 import (
+	"log"
 	"os"
+	"os/user"
 
 	"gopkg.in/yaml.v3"
 )
@@ -21,14 +23,18 @@ type TiseaConfiguration struct {
 }
 
 func BindConfiguration(cfg *TiseaConfiguration) *TiseaConfiguration {
-	file, err := os.ReadFile("config.yml")
+	usr, _ := user.Current()
+	file, err := os.ReadFile(usr.HomeDir + "/.tisea/config.yml")
+
 	if err != nil {
+		log.Fatal(err)
 		return nil
 	}
 
 	err = yaml.Unmarshal(file, cfg)
 
 	if err != nil {
+		log.Fatal(err)
 		return nil
 	}
 
