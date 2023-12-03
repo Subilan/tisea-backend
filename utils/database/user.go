@@ -35,7 +35,7 @@ func InsertRegisteringUser(user structs.RegisteringUser) error {
 
 // 使用用户名获取 *DatabaseUser 对象。若不存在指定的用户，返回 nil 和 nil。
 func GetUserByUsername(username string) (*structs.DatabaseUser, error) {
-	result, err := Query("SELECT (email, password_hash, nickname, bio, id, created_at, updated_at, group_id, level) FROM `tisea_users` WHERE username=?", username)
+	result, err := Query("SELECT  email, password_hash, nickname, bio, id, created_at, updated_at, group_id, level FROM `tisea_users` WHERE username=?", username)
 	user := new(structs.DatabaseUser)
 	if err != nil {
 		return user, err
