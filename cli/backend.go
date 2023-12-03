@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 	"tisea-backend/middlewares"
-	"tisea-backend/routes/auth"
+	"tisea-backend/handlers/auth"
 	"tisea-backend/utils/config"
 	"tisea-backend/utils/database"
 

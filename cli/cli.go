@@ -1,19 +1,19 @@
 package cli
 
-import "github.com/urfave/cli/v2"
+import cliv2 "github.com/urfave/cli/v2"
 
-var Commands = []*cli.Command{
-	&cli.Command{
+var Commands = []*cliv2.Command{
+	&cliv2.Command{
 		Name: "help",
 		Usage: "Get help messages",
-		Action: func(ctx *cli.Context) error {
-			return cli.ShowAppHelp(ctx)
+		Action: func(ctx *cliv2.Context) error {
+			return cliv2.ShowAppHelp(ctx)
 		},
 	},
-	&cli.Command{
+	&cliv2.Command{
 		Name: "run",
-		Usage: "Run backend built on gin",
-		Action: func(ctx *cli.Context) error {
+		Usage: "Run the backend",
+		Action: func(ctx *cliv2.Context) error {
 			return RunBackend()
 		},
 	},
