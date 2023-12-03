@@ -40,7 +40,7 @@ func RunBackend() error {
 
 	auth.Bind(gin)
 
-	// Necessary to block the calling goroutine
+	// Necessary: to block the calling goroutine
 	gin.Run(":3000")
 
 	return nil
