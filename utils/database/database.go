@@ -42,18 +42,18 @@ func Query(queryString string, values ...interface{}) (*sql.Rows, error) {
 	return result, nil
 }
 
-// 判断一个语句是否有结果。如果过程中发生错误，返回false
-func HasResult(queryString string, values ...interface{}) bool {
+// 获取一个语句结果的行数。如果过程中发生错误，返回 -1；正常结果 >=0
+func Count(queryString string, values ...interface{}) int {
 	stmt, stmtErr := Pool.Prepare(queryString)
 
 	if stmtErr != nil {
-		return false
+		return -1
 	}
 
 	result, queryErr := stmt.Query(values...)
 
 	if queryErr != nil {
-		return false
+		return -1
 	}
 
 	count := 0
@@ -61,5 +61,10 @@ func HasResult(queryString string, values ...interface{}) bool {
 		count++
 	}
 
-	return count > 0
+	return count
+}
+
+// 判断一个语句是否有结果。
+func HasResult(queryString string, values ...interface{}) bool {
+	return Count(queryString, values...) > 0
 }
