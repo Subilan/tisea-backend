@@ -18,7 +18,7 @@ func Exec(execString string, values ...interface{}) (sql.Result, error) {
 		return nil, stmtErr
 	}
 
-	effect, execErr := stmt.Exec(values...)
+	effect, execErr := stmt.Exec(values...) 
 	if execErr != nil {
 		return nil, execErr
 	}
@@ -44,21 +44,11 @@ func Query(queryString string, values ...interface{}) (*sql.Rows, error) {
 
 // 获取一个语句结果的行数。如果过程中发生错误，返回 -1；正常结果 >=0
 func Count(queryString string, values ...interface{}) int {
-	stmt, stmtErr := Pool.Prepare(queryString)
+	var count int
+	err := Pool.QueryRow(queryString, values...).Scan(&count)
 
-	if stmtErr != nil {
+	if err != nil {
 		return -1
-	}
-
-	result, queryErr := stmt.Query(values...)
-
-	if queryErr != nil {
-		return -1
-	}
-
-	count := 0
-	for result.Next() {
-		count++
 	}
 
 	return count
