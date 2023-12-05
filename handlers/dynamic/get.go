@@ -13,11 +13,11 @@ import (
 func get(ctx *gin.Context) {
 	queries := ctx.Request.URL.Query()
 
-	_skip := queries.Get("skip")
-	_limit := queries.Get("limit")
-	by := queries.Get("by")
-	with := queries.Get("with")
-	order := queries.Get("order")
+	_skip := queries.Get("skip") // Required. Amount of items that need to be skipped before selecting
+	_limit := queries.Get("limit") // Required. Amount of items to be selected
+	by := queries.Get("by") // Required. The classification standard type of the selection. Must be either 'author' or 'id'
+	with := queries.Get("with") // Required. The classification standard value of the selection. For 'author', must be a case-sensitive string. For 'id', must be a valid uint64.
+	order := queries.Get("order") // Optional. The order of the selected values. If provided, it must be either 'asc' (stands for ascending) or 'desc' (stands for descending). If not provided, default to 'desc'.
 
 	if by != "author" && by != "id" {
 		response.NG(ctx, fmt.Errorf("INVALID_ARGUMENT `by`"), nil)
