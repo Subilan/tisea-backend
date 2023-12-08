@@ -3,7 +3,6 @@ package database
 import (
 	"fmt"
 	"tisea-backend/structs"
-	"tisea-backend/utils/testing"
 )
 
 func MakePostingDynamic(title string, content string, author string, categories string, tags string) *structs.PostingDynamic {
@@ -88,17 +87,7 @@ func GetDynamicsByID(id uint64) (*structs.DatabaseDynamic, error) {
 func DeleteDynamic(id uint64) error {
 	execString := "DELETE FROM `tisea_dynamics` WHERE id=?"
 
-	result, err := Exec(execString, id)
-
-	if err != nil {
-		return nil
-	}
-
-	if affected, affErr := result.RowsAffected(); affErr != nil {
-		return nil
-	} else {
-		testing.MustEqual(result, affected)
-	}
+	_, err := Exec(execString, id)
 
 	return err
 }
