@@ -9,16 +9,14 @@ import (
 )
 
 func create(ctx *gin.Context) {
-	var request structs.PostingDynamic
+	var dynamic structs.CreateDynamicRequest
 
-	if err := ctx.BindJSON(&request); err != nil {
+	if err := ctx.BindJSON(&dynamic); err != nil {
 		response.NG(ctx, err, nil)
 		return
 	}
 
-	dynamic := database.MakePostingDynamic(request.Title, request.Content, request.Author, request.Categories, request.Tags)
-
-	if err := database.InsertPostingDynamic(*dynamic); err != nil {
+	if err := database.InsertPostingDynamic(dynamic); err != nil {
 		response.NG(ctx, err, nil)
 		return
 	}

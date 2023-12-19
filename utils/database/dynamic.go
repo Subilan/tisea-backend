@@ -5,8 +5,8 @@ import (
 	"tisea-backend/structs"
 )
 
-func MakePostingDynamic(title string, content string, author string, categories string, tags string) *structs.PostingDynamic {
-	dynamic := new(structs.PostingDynamic)
+func MakePostingDynamic(title string, content string, author string, categories string, tags string) *structs.CreateDynamicRequest {
+	dynamic := new(structs.CreateDynamicRequest)
 
 	dynamic.Title = title
 	dynamic.Content = content
@@ -17,7 +17,7 @@ func MakePostingDynamic(title string, content string, author string, categories 
 	return dynamic
 }
 
-func InsertPostingDynamic(dynamic structs.PostingDynamic) error {
+func InsertPostingDynamic(dynamic structs.CreateDynamicRequest) error {
 	_, err := Exec("INSERT INTO `tisea_dynamics` (title, content, author, categories, tags) VALUES (?, ?, ?, ?, ?)", dynamic.Title, dynamic.Content, dynamic.Author, dynamic.Categories, dynamic.Tags)
 
 	return err
@@ -26,7 +26,7 @@ func InsertPostingDynamic(dynamic structs.PostingDynamic) error {
 // 使用选取的列名和值获取对应的 *structs.DatabaseDynamic 数组。
 //
 // limit — 每次获取的数据量，offset 代表获取之前跳过的行数。
-// 
+//
 // ☆ 一般而言，limit 即每次获取时需要的数据总量，offset 即先前已经获取的数据总量。
 //
 // ☆ 例如，若先前已经获取了 8 项，还要获取 7 项，则 limit=7, offset=8，在获取 7 项之前会跳过 8 项，实际获取的是第 9-15 项。
@@ -42,7 +42,7 @@ func GetDynamicsBy(valueName string, value interface{}, limit int, offset int, d
 	}
 
 	queryString := fmt.Sprintf("SELECT id, title, content, author, hidden, categories, tags, created_at, updated_at FROM `tisea_dynamics` WHERE %s=? ORDER BY id %s LIMIT %d OFFSET %d", valueName, orderBy, limit, offset)
-	
+
 	rows, err := Query(queryString, value)
 	if err != nil {
 		return nil, err

@@ -14,7 +14,7 @@ type DatabaseDynamic struct {
 	UpdatedAt  time.Time `json:"updated_at"`
 }
 
-type PostingDynamic struct {
+type CreateDynamicRequest struct {
 	Title      string `json:"title"`
 	Content    string `json:"content"`
 	Author     string `json:"author"`
