@@ -11,7 +11,7 @@ import (
 )
 
 func login(ctx *gin.Context) {
-	var request structs.LoggingInUser
+	var request structs.LoginUserRequest
 
 	if err := ctx.BindJSON(&request); err != nil {
 		response.NG(ctx, err, nil)

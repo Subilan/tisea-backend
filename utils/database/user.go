@@ -6,10 +6,10 @@ import (
 )
 
 // 从给定的数据中创建一个 *RegisteringUser 对象
-func MakeRegisteringUser(username string, email string, password string) (*structs.RegisteringUser, error) {
+func MakeRegisteringUser(username string, email string, password string) (*structs.RegisterUserRequest, error) {
 	hashed, err := security.GenerateHash(password)
 
-	user := new(structs.RegisteringUser)
+	user := new(structs.RegisterUserRequest)
 
 	if err != nil {
 		return user, err
@@ -23,7 +23,7 @@ func MakeRegisteringUser(username string, email string, password string) (*struc
 }
 
 // 将所给的 RegisteringUser 对象插入到数据库中
-func InsertRegisteringUser(user structs.RegisteringUser) error {
+func InsertRegisteringUser(user structs.RegisterUserRequest) error {
 	_, err := Exec("INSERT INTO `tisea_users` (username, password_hash, email) VALUES (?, ?, ?)", user.Username, user.Hash, user.Email)
 
 	return err
@@ -38,7 +38,6 @@ func GetUserByUsername(username string) (*structs.DatabaseUser, error) {
 	}
 	defer result.Close()
 
-	
 	if result.Next() {
 		result.Scan(&user.Email, &user.Hash, &user.Nickname, &user.Bio, &user.ID, &user.CreatedAt, &user.UpdatedAt, &user.GroupId, &user.Level)
 	} else {

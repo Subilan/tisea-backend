@@ -17,14 +17,14 @@ type DatabaseUser struct {
 }
 
 // 包含基本信息的 User 对象
-type RegisteringUser struct {
+type RegisterUserRequest struct {
 	Username string `json:"username"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
 	Hash     string `json:"hash"`
 }
 
-type LoggingInUser struct {
+type LoginUserRequest struct {
 	Username   string `json:"username"`
 	Password   string `json:"password"`
 	Remembered bool   `json:"remembered"`

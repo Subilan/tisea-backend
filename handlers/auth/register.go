@@ -10,7 +10,7 @@ import (
 )
 
 func register(ctx *gin.Context) {
-	var request structs.RegisteringUser
+	var request structs.RegisterUserRequest
 
 	if err := ctx.BindJSON(&request); err != nil {
 		response.NG(ctx, err, nil)
