@@ -91,3 +91,16 @@ func DeleteDynamic(id uint64) error {
 
 	return err
 }
+
+func SetHiddenDynamic(id uint64, state bool) error {
+	var execString string
+	if state {
+		execString = "UPDATE `tisea_dynamics` SET hidden=1 WHERE id=?"
+	} else {
+		execString = "UPDATE `tisea_dynamics` SET hidden=0 WHERE id=?"
+	}
+
+	_, err := Exec(execString, id)
+
+	return err
+}

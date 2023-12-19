@@ -13,6 +13,7 @@ func delete(ctx *gin.Context) {
 	queries := ctx.Request.URL.Query()
 
 	id := queries.Get("id")
+	soft := queries.Get("soft") == "1"
 
 	if len(id) == 0 {
 		response.NG(ctx, fmt.Errorf("NOT_ENOUGH_ARGUMENT"), nil)
@@ -28,7 +29,14 @@ func delete(ctx *gin.Context) {
 		return
 	}
 
-	if err := database.DeleteDynamic(parsed); err != nil {
+	var err error
+	if soft {
+		err = database.SetHiddenDynamic(parsed, true)
+	} else {
+		err = database.DeleteDynamic(parsed)
+	}
+
+	if err != nil {
 		response.NG(ctx, err, nil)
 		return
 	}
