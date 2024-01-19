@@ -37,7 +37,7 @@ Here is the map of all the API endpoints implemented for now. Modules that the e
 - *DELETE* `/dynamic?=` Query - (Hard or Soft) Delete the dynamic with the provided `id`. "Soft Delete" actually stands for "Hide" operation.
 - *GET* `/dynamic?=` Query - Get a list of dynamics. The list is built according to the arguments provided.
 
-## Improvement & Suggections Wanted!
+## Improvement & Suggestions Wanted!
 
 This project is trying to make a concrete, inspiring and easy-to-use backend of a potential Minecraft community. Any suggestion and direct improvement (through PRs) is welcome, and we'd also like to listen to your unique opinions on this project (through Issues or Email).
 
